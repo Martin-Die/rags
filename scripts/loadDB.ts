@@ -3,6 +3,7 @@ import { PuppeteerWebBaseLoader } from "@langchain/community/document_loaders/we
 import OpenAI from "openai";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import "dotenv/config";
+import { ragSEOData } from "@/data/seo";
 
 type SimilarityMetric = "dot_product" | "cosine" | "euclidean";
 
@@ -15,10 +16,6 @@ const {
 } = process.env;
 
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
-
-const ragSEOData = [
-    'https://fr.wikipedia.org/wiki/Optimisation_pour_les_moteurs_de_recherche'
-];
 
 // Vérification de l'existence de ASTRA_DB_API_ENDPOINT
 if (!ASTRA_DB_API_ENDPOINT) {

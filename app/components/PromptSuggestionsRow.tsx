@@ -1,5 +1,6 @@
 import React from 'react';
 import PromptSuggestionButton from "./PromptSuggestionButton";
+import { ragSEOPrompts } from '@/questions/seo';
 
 interface PromptSuggestionsRowProps {
     onPromptClick: (prompt: string) => void;
@@ -7,14 +8,9 @@ interface PromptSuggestionsRowProps {
 
 const PromptSuggestionsRow: React.FC<PromptSuggestionsRowProps> = ({ onPromptClick }) => {
 
-    const prompts = [
-        "c'est quoi le seo ?",
-        "comment appliquer le seo ?",
-    ];
-
     return (
         <div className="prompt-suggestion-row">
-            {prompts.map((prompt, index) =>
+            {ragSEOPrompts.map((prompt, index) =>
                 <PromptSuggestionButton
                     key={`suggestion-${index}`}
                     text={prompt}
