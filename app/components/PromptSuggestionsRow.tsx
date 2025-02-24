@@ -1,6 +1,6 @@
 import React from 'react';
 import PromptSuggestionButton from "./PromptSuggestionButton";
-import { ragSEOPrompts } from '@/questions/seo';
+import { ragSEOPrompts } from '@/assistants/seo/questions';
 
 interface PromptSuggestionsRowProps {
     onPromptClick: (prompt: string) => void;

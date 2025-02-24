@@ -3,7 +3,7 @@ import { PuppeteerWebBaseLoader } from "@langchain/community/document_loaders/we
 import OpenAI from "openai";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import "dotenv/config";
-import { ragSEOData } from "@/data/seo";
+import { ragSEOData } from "@/assistants/seo/data";
 
 type SimilarityMetric = "dot_product" | "cosine" | "euclidean";
 
