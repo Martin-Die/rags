@@ -1,7 +1,6 @@
 import OpenAI from "openai";
 import { openai } from '@ai-sdk/openai';
 import { streamText } from "ai";
-// import { LanguageModelV1, streamText } from 'ai';
 import { DataAPIClient } from "@datastax/astra-db-ts";
 
 const {

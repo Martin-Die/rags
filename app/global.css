@@ -90,7 +90,7 @@ input:focus {
     margin-left: auto;
 }
 
-.bubble.user {
+.bubble.assistant {
     border-radius: 20px 20px 20px 0;
     background-color: #DCE7FF
 }
