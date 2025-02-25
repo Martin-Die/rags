@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image";
-import LogoLBDD from "@/app/assets/Logo LBDD.png";
+import LogoLBDD from "@/public/LogoLBDD.png";
 import { useChat } from "ai/react";
 import { Message } from "ai";
 import Bubble from "@/app/components/Bubble";
