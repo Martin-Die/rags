@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { blob, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const usersTable = sqliteTable('users', {
     id: integer('id').primaryKey(),
@@ -12,14 +12,14 @@ export type SelectUser = typeof usersTable.$inferSelect;
 
 export const assistantsTable = sqliteTable('assistants', {
     id: integer('id').primaryKey(),
-    description: text('description').notNull(),
     domaine: text('domaine').notNull(),
-    image: text('image').notNull(), // Stocker l'URL de l'image
-    nom: text('nom').notNull(),
-    phrase: text('phrase').notNull(),
     role: text('role').notNull(),
+    nom: text('nom').notNull(),
+    description: text('description').notNull(),
+    phrase: text('phrase').notNull(),
+    image: blob('image').notNull(), // Stocker l'URL de l'image
     theme: text('theme').notNull(),
-    themeBis: text('theme_bis').notNull(),
+    // themeBis: text('theme_bis').notNull(),
     createdAt: text('created_at')
         .default(sql`(CURRENT_TIMESTAMP)`)
         .notNull(),
