@@ -1,4 +1,5 @@
-// crudOperations.ts
+'use server'
+
 import { db } from "@/app/db";
 import { assistantsTable } from "@/app/db/schema";
 import { eq } from 'drizzle-orm';
