@@ -1,114 +1,108 @@
 'use client'
 
-import { useState, useEffect } from 'react';
-import { fetchAssistants, addAssistant, updateAssistant, deleteAssistant, Assistant } from './crudOperations';
+import React, { useState } from 'react';
+import { createAssistant } from '@/app/db/queries/insert';
 
-export default function Admin() {
-    const [assistants, setAssistants] = useState<Assistant[]>([]);
-    const [isAddPopupOpen, setIsAddPopupOpen] = useState<boolean>(false);
-    const [isEditPopupOpen, setIsEditPopupOpen] = useState<boolean>(false);
-    const [currentAssistant, setCurrentAssistant] = useState<Assistant | null>(null);
+// Définition de l'interface AssistantData
+interface AssistantData {
+    role: string;
+    image: string | null;
+    domaine: string;
+    nom: string;
+    description: string;
+    phrase: string;
+    theme: string;
+    id?: number;
+    createdAt?: string;
+    modifiedDate?: Date | null;
+}
 
-    useEffect(() => {
-        fetchAssistants().then(setAssistants).catch(console.error);
-    }, []);
+function DataInsertForm() {
+    const [assistantData, setAssistantData] = useState<AssistantData>({
+        role: '',
+        image: null,
+        domaine: '',
+        nom: '',
+        description: '',
+        phrase: '',
+        theme: '',
+    });
 
-    const handleAdd = async (formData: FormData) => {
+    const handleAssistantSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         try {
-            await addAssistant(formData);
-            setIsAddPopupOpen(false);
-            const updatedAssistants = await fetchAssistants();
-            setAssistants(updatedAssistants);
+            await createAssistant(assistantData);
+            alert('Assistant created successfully');
+            setAssistantData({
+                role: '',
+                image: null,
+                domaine: '',
+                nom: '',
+                description: '',
+                phrase: '',
+                theme: '',
+            });
         } catch (error) {
-            if (error instanceof Error) {
-                alert(error.message);
-            } else {
-                alert("Une erreur inconnue s'est produite.");
-            }
-        }
-    };
-
-    const handleUpdate = async (formData: FormData) => {
-        try {
-            await updateAssistant(formData, currentAssistant);
-            setIsEditPopupOpen(false);
-            const updatedAssistants = await fetchAssistants();
-            setAssistants(updatedAssistants);
-        } catch (error) {
-            if (error instanceof Error) {
-                alert(error.message);
-            } else {
-                alert("Une erreur inconnue s'est produite.");
-            }
-        }
-    };
-
-    const handleDelete = async (id: number) => {
-        if (confirm("Êtes-vous sûr de vouloir supprimer cet assistant ?")) {
-            try {
-                await deleteAssistant(id);
-                const updatedAssistants = await fetchAssistants();
-                setAssistants(updatedAssistants);
-            } catch (error) {
-                if (error instanceof Error) {
-                    alert(error.message);
-                } else {
-                    alert("Une erreur inconnue s'est produite.");
-                }
-            }
+            console.error('Error creating assistant:', error);
         }
     };
 
     return (
-        <main>
-            <div>
-                <button onClick={() => setIsAddPopupOpen(true)}>Ajouter un assistant</button>
-
-                {assistants.map(assistant => (
-                    <div key={assistant.id}>
-                        <h3>{assistant.nom}</h3>
-                        <p>{assistant.description}</p>
-                        <button onClick={() => {
-                            setCurrentAssistant(assistant);
-                            setIsEditPopupOpen(true);
-                        }}>Modifier</button>
-                        <button onClick={() => handleDelete(assistant.id)}>Supprimer</button>
-                    </div>
-                ))}
-
-                {isAddPopupOpen && (
-                    <div className="popup">
-                        <form action={handleAdd}>
-                            <input name="domaine" placeholder="Domaine" required />
-                            <input name="role" placeholder="Rôle" required />
-                            <input name="nom" placeholder="Nom" required />
-                            <textarea name="description" placeholder="Description" required />
-                            <input name="phrase" placeholder="Phrase" required />
-                            <input name="image" type="file" accept="image/*" required />
-                            <input name="theme" placeholder="Thème (ex: #RRGGBB)" required />
-                            <button type="submit">Ajouter</button>
-                            <button type="button" onClick={() => setIsAddPopupOpen(false)}>Annuler</button>
-                        </form>
-                    </div>
-                )}
-
-                {isEditPopupOpen && currentAssistant && (
-                    <div className="popup">
-                        <form action={handleUpdate}>
-                            <input type="hidden" name="id" value={currentAssistant.id} />
-                            <input name="domaine" defaultValue={currentAssistant.domaine} required />
-                            <input name="role" defaultValue={currentAssistant.role} required />
-                            <input name="nom" defaultValue={currentAssistant.nom} required />
-                            <textarea name="description" defaultValue={currentAssistant.description} required />
-                            <input name="phrase" defaultValue={currentAssistant.phrase} required />
-                            <input name="image" type="file" accept="image/*" />
-                            <input name="theme" defaultValue={currentAssistant.theme} required />
-                            <button type="submit">Mettre à jour</button>
-                            <button type="button" onClick={() => setIsEditPopupOpen(false)}>Annuler</button>
-                        </form>
-                    </div>
-                )}
-            </div>
-        </main>
+        <div>
+            <h2>Create Assistant</h2>
+            <form onSubmit={handleAssistantSubmit}>
+                <input
+                    type="text"
+                    value={assistantData.nom}
+                    onChange={(e) => setAssistantData({ ...assistantData, nom: e.target.value })}
+                    placeholder="Nom"
+                    required
+                />
+                <input
+                    type="text"
+                    value={assistantData.role}
+                    onChange={(e) => setAssistantData({ ...assistantData, role: e.target.value })}
+                    placeholder="Role"
+                    required
+                />
+                <input
+                    type="text"
+                    value={assistantData.domaine}
+                    onChange={(e) => setAssistantData({ ...assistantData, domaine: e.target.value })}
+                    placeholder="Domaine"
+                    required
+                />
+                <input
+                    type="text"
+                    value={assistantData.description}
+                    onChange={(e) => setAssistantData({ ...assistantData, description: e.target.value })}
+                    placeholder="Description"
+                    required
+                />
+                <input
+                    type="text"
+                    value={assistantData.phrase}
+                    onChange={(e) => setAssistantData({ ...assistantData, phrase: e.target.value })}
+                    placeholder="Phrase"
+                    required
+                />
+                <input
+                    type="text"
+                    value={assistantData.theme}
+                    onChange={(e) => setAssistantData({ ...assistantData, theme: e.target.value })}
+                    placeholder="Theme"
+                    required
+                />
+                <input
+                    type="text"
+                    value={assistantData.image || ''}
+                    onChange={(e) => setAssistantData({ ...assistantData, image: e.target.value })}
+                    placeholder="Image URL"
+                />
+                <button type="submit">Create Assistant</button>
+            </form>
+        </div>
     );
 }
+
+export default DataInsertForm;
